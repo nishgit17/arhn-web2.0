@@ -9,21 +9,17 @@
     <base href="/">
     <link href="https://arhn.nitdgp.ac.in" rel="canonical">
     <title>Aarohan 2026</title>
-    <meta name="description"
-        content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur.">
+    <meta name="description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur.">
     <meta property="og:url" content="https://arhn.nitdgp.ac.in">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Aarohan 2026">
-    <meta property="og:description"
-        content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur.">
+    <meta property="og:description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur.">
     <meta property="og:image" content="/assets/meta/android-chrome-512x512.png">
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://arhn.nitdgp.ac.in">
     <meta property="twitter:title" content="Aarohan 2026">
-    <meta property="twitter:description"
-        content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur.">
-    <meta property="twitter:image"
-        content="/assets/meta/android-chrome-512x512.png">
+    <meta property="twitter:description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur.">
+    <meta property="twitter:image" content="/assets/meta/android-chrome-512x512.png">
     <meta name="apple-mobile-web-app-title" content="Aarohan">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -273,11 +269,11 @@
 
                 // Top-Left positioning with responsive scale
                 if (W < 700) {
-                    S = 80; // Smaller scale on mobile
+                    S = 80 * 0.65; // Smaller scale on mobile
                     CX = 20 + (S * 0.5);
                     CY = 20 + (S * 0.4);
                 } else {
-                    S = Math.min(Math.max(W * 0.15, 150), 300); // Scale between 150 and 300
+                    S = Math.min(Math.max(W * 0.15, 150), 300) * 0.65; // Scale between 150 and 300
                     CX = 30 + (S * 0.5);
                     CY = 30 + (S * 0.4);
                 }
@@ -396,6 +392,95 @@
             fade();
         });
     </script>
-    
+
+    <footer id="ar-footer" style="
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 2147483647;
+        background: rgba(10, 0, 0, 0.45);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        color: #fff;
+        font-family: 'nbarchitekt', monospace;
+        border-top: 1px dashed rgba(255, 255, 255, 0.15);
+        box-sizing: border-box;
+        transform: translateY(calc(100% - 40px));
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: auto;
+    ">
+        <!-- Hover indicator bar -->
+        <div
+            style="height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-size: 11px; letter-spacing: 3px; color: #aaa;">[ REVEAL FOOTER ]</div>
+        </div>
+
+        <!-- Footer Content -->
+        <div style="padding: 30px 60px; display: flex; justify-content: space-between;">
+            <div style="display: flex; flex-direction: column; gap: 15px; max-width: 30%;">
+                <img src="/assets/images/ar-logo-rmbg.png" style="width: 120px; margin-bottom: 10px;"
+                    alt="Aarohan Logo">
+                <div style="color: #aaa; font-size: 12px; line-height: 1.6; letter-spacing: 1px;">
+                    [AAROHAN 2026]<br>
+                    [ANNUAL TECHNO-MANAGEMENT FEST]<br>
+                    [NIT DURGAPUR]
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">EXPLORE</h3>
+                <a href="/events"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [EVENTS]</a>
+                <a href="/games" style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [GAMES]</a>
+                <a href="/workshops"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [WORKSHOPS]</a>
+                <a href="/stalls"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [STALLS]</a>
+                <a href="/sponsors"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [SPONSORS]</a>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">CONNECT</h3>
+                <a href="mailto:arhn@nitdgp.ac.in"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [arhn@nitdgp.ac.in]</a>
+                <a href="https://www.instagram.com/arhn.nitd?stkn=bTBoa2E5eTd4NnV0" target="_blank"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [INSTAGRAM]</a>
+                <a href="https://www.linkedin.com/company/aarohan-nit-durgapur/" target="_blank"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [LINKEDIN]</a>
+                <a href="#" target="_blank"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [FACEBOOK]</a>
+                <a href="https://x.com/aarohan_nitdgp" target="_blank"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [X]</a>
+            </div>
+        </div>
+    </footer>
+    <style>
+        /* Trigger hover slides up the footer */
+        #ar-footer:hover {
+            transform: translateY(0) !important;
+        }
+    </style>
+    <style>
+        footer a:hover {
+            color: #fff !important;
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                flex-direction: column !important;
+                padding: 20px !important;
+                gap: 30px;
+                position: absolute !important;
+            }
+        }
+    </style>
 </body>
+
 </html>
