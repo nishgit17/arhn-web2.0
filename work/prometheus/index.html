@@ -7,7 +7,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
     <base href="/">
-        <link href="https://arhn.nitdgp.ac.in" rel="canonical">
+    <link href="https://arhn.nitdgp.ac.in" rel="canonical">
     <title>Aarohan 2026</title>
     <meta name="description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur.">
     <meta property="og:url" content="https://arhn.nitdgp.ac.in">
@@ -147,7 +147,8 @@
             }
         }
     </style>
-    <script>!function () { window._ENV_ = 'production'; window._CMS_ = "%CMS%"; window._UNSUPPORTED_PAGE_ = "unsupported.html"; try { eval("let obj = {}; obj?.prop") } catch (e) { window.location.replace(window._UNSUPPORTED_PAGE_); return } window._CACHE_ = "1746999829739", window.UIL_STATIC_PATH = "assets/data/uil.1746999829739.json"; var p, s = "assets/js/app." + window._CACHE_ + ".js", h = document.head, e = document.createElement("link"); e.href = s, e.rel = "preload", e.as = "script", h.appendChild(e), (e = document.createElement("script")).src = s, e.async = !0, h.appendChild(e) }();</script>
+    <script>!function () { window._ENV_ = 'production'; window._CMS_ = "%CMS%"; window._UNSUPPORTED_PAGE_ = "unsupported.html"; try { eval("let obj = {}; obj?.prop") } catch (e) { window.location.replace(window._UNSUPPORTED_PAGE_); return } window._CACHE_ = "1746999829739", window.UIL_STATIC_PATH = "assets/data/uil.1746999829739.json?v=aarohan-20261007-9"; var p, s = "assets/js/app." + window._CACHE_ + ".js?v=aarohan-20261007-9", h = document.head, e = document.createElement("link"); e.href = s, e.rel = "preload", e.as = "script", h.appendChild(e), (e = document.createElement("script")).src = s, e.async = !0, h.appendChild(e) }();</script>
+    <script src="assets/js/card-media.js?v=aarohan-20261007-8"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J7TMDT4F8N"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -178,6 +179,31 @@
             box-sizing: border-box;
         }
 
+        /* Fully remove/hide all text boxes, inputs, search fields, and ask prompts */
+        input,
+        textarea,
+        [contenteditable="true"],
+        form,
+        .input,
+        .search,
+        .prompt,
+        .chat,
+        .ask,
+        [class*="input"],
+        [class*="search"],
+        [class*="ask"],
+        [class*="prompt"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            height: 0 !important;
+            width: 0 !important;
+            position: absolute !important;
+            top: -9999px !important;
+            left: -9999px !important;
+        }
+
         /* Silver border accents and reduced red vignette */
         body::after {
             content: "";
@@ -206,6 +232,310 @@
             style="background: black; color: white; font-size: 20px; display: inline; font-family: Helvetica, Arial, sans-serif; padding: 10px;">
             Please enable javascript</p>
     </noscript>
+
+    <img id="custom-qr-code" src="/assets/images/ui/custom_qr.png" style="display:none;" />
+
+    <script>
+        // Particle Logo Implementation (Translated from React)
+        document.addEventListener("DOMContentLoaded", () => {
+            const cv = document.createElement("canvas");
+            cv.style.position = 'fixed';
+            cv.style.top = '0';
+            cv.style.left = '0';
+            cv.style.width = '100%';
+            cv.style.height = '100%';
+            cv.style.pointerEvents = 'none'; // Don't block interactions below
+            cv.style.zIndex = '2147483647'; // Ensure it's above the WebGL background and overlays
+            document.body.appendChild(cv);
+
+            let alive = true;
+            const _l = [];
+            const addL = (a, b, c) => { window.addEventListener(a, b, c); _l.push([a, b, c]); };
+            const RAF = f => { if (alive) requestAnimationFrame(f); };
+
+            const cx = cv.getContext('2d', { willReadFrequently: true });
+            const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let W, H, dpr, S, CX, CY, mouse = { x: -999, y: -999 };
+            const N = 2800, P = [];
+            let targetPts = [];
+
+            function size() {
+                dpr = Math.min(devicePixelRatio || 1, 2);
+                W = window.innerWidth;
+                H = window.innerHeight;
+                cv.width = W * dpr;
+                cv.height = H * dpr;
+                cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                // Top-Left positioning with responsive scale
+                if (W < 700) {
+                    S = 80 * 0.65; // Smaller scale on mobile
+                    CX = 20 + (S * 0.5);
+                    CY = 20 + (S * 0.4);
+                } else {
+                    S = Math.min(Math.max(W * 0.15, 150), 300) * 0.65; // Scale between 150 and 300
+                    CX = 30 + (S * 0.5);
+                    CY = 30 + (S * 0.4);
+                }
+            }
+
+            function sample(img) {
+                const w = img.width, h = img.height, k = 320 / Math.max(w, h);
+                const cw = Math.round(w * k), ch = Math.round(h * k);
+                const o = document.createElement('canvas');
+                o.width = cw;
+                o.height = ch;
+                const c = o.getContext('2d');
+                c.drawImage(img, 0, 0, cw, ch);
+
+                const d = c.getImageData(0, 0, cw, ch).data, pts = [];
+                for (let y = 0; y < ch; y++) {
+                    for (let x = 0; x < cw; x++) {
+                        const i = (y * cw + x) * 4;
+                        // Filter out dark/transparent background, keeping silver elements
+                        if (d[i + 3] > 80 && d[i] + d[i + 1] + d[i + 2] > 110) {
+                            pts.push([(x - cw / 2) / 320, (y - ch / 2) / 320, d[i], d[i + 1], d[i + 2]]);
+                        }
+                    }
+                }
+                for (let i = pts.length - 1; i > 0; i--) {
+                    const j = Math.random() * (i + 1) | 0;
+                    [pts[i], pts[j]] = [pts[j], pts[i]];
+                }
+                return pts;
+            }
+
+            function retarget() {
+                if (!targetPts || !targetPts.length) return;
+                for (let i = 0; i < N; i++) {
+                    const p = P[i], t = targetPts[i % targetPts.length];
+                    p.t = t;
+                }
+            }
+
+            function frame() {
+                cx.clearRect(0, 0, W, H);
+                const sp = reduce ? .3 : .07, fr = reduce ? .6 : .86;
+
+                for (const p of P) {
+                    const t = p.t;
+                    if (!t) continue;
+
+                    const tx = CX + t[0] * S * 1.0 + p.jx;
+                    const ty = CY + t[1] * S * 1.0 + p.jy;
+                    let ax = (tx - p.x) * sp, ay = (ty - p.y) * sp;
+
+                    if (!reduce) {
+                        const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+                        if (d2 < 14000) {
+                            const f = (1 - d2 / 14000) * 3;
+                            const d = Math.sqrt(d2) || 1;
+                            ax += dx / d * f;
+                            ay += dy / d * f;
+                        }
+                    }
+
+                    p.vx = (p.vx + ax) * fr;
+                    p.vy = (p.vy + ay) * fr;
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    p.r += (t[2] - p.r) * .08;
+                    p.g += (t[3] - p.g) * .08;
+                    p.b += (t[4] - p.b) * .08;
+
+                    cx.fillStyle = 'rgb(' + (p.r | 0) + ',' + (p.g | 0) + ',' + (p.b | 0) + ')';
+                    cx.fillRect(p.x, p.y, 1.8, 1.8);
+                }
+                RAF(frame);
+            }
+
+            function load() {
+                return new Promise((resolve, reject) => {
+                    const i = new Image();
+                    i.crossOrigin = "anonymous";
+                    i.onload = () => { targetPts = sample(i); resolve(); };
+                    i.onerror = reject;
+                    i.src = '/assets/images/ar-logo.png'; // Updated to use the explicitly saved image
+                });
+            }
+
+            size();
+            addL('resize', size);
+
+            for (let i = 0; i < N; i++) {
+                const a = Math.random() * 6.283;
+                const r = Math.random() * Math.max(window.innerWidth, window.innerHeight);
+                P.push({
+                    x: window.innerWidth / 2 + Math.cos(a) * r,
+                    y: window.innerHeight / 2 + Math.sin(a) * r,
+                    vx: 0, vy: 0, r: 60, g: 60, b: 70,
+                    jx: (Math.random() - .5) * 2,
+                    jy: (Math.random() - .5) * 2,
+                    t: null
+                });
+            }
+
+            addL('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+            addL('pointerleave', () => { mouse.x = mouse.y = -999; });
+
+            load().then(() => {
+                retarget();
+                frame();
+            }).catch(err => console.error("Error loading logo:", err));
+
+            function fade() {
+                // Remove fade to ensure logo remains visible
+                // cv.style.opacity = Math.max(0, 1 - window.scrollY / (window.innerHeight * .8));
+            }
+
+            // addL('scroll', fade, { passive: true });
+            // fade();
+        });
+    </script>
+
+    <!-- Footer Hover Wrapper -->
+    <div id="ar-footer-wrapper" style="
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        z-index: 2147483647;
+    ">
+        <!-- Reveal Footer Trigger -->
+        <div
+            style="height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); width: 100%; position: absolute; bottom: 0; z-index: 10; pointer-events: auto;">
+            <div
+                style="font-size: 11px; letter-spacing: 3px; color: rgba(255, 255, 255, 0.4); text-shadow: 0 0 5px rgba(0,0,0,0.8);">
+                [ REVEAL FOOTER ]</div>
+        </div>
+
+        <footer id="ar-footer" style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 0, 0, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: #fff;
+            font-family: 'nbarchitekt', monospace;
+            border-top: 1px dashed rgba(255, 255, 255, 0.15);
+            box-sizing: border-box;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 60px;
+            pointer-events: auto;
+        ">
+            <!-- Footer Content: Logo on left -->
+            <div style="display: flex; flex-direction: column; max-width: 30%; margin-top: -20px;">
+                <img src="/assets/images/ar-logo-rmbg.png" style="width: 120px; margin-bottom: 0px;"
+                    alt="Aarohan Logo">
+                <div style="color: #aaa; font-size: 12px; line-height: 1.6; letter-spacing: 1px; margin-top: -15px;">
+                    [AAROHAN 2026]<br>
+                    [ANNUAL TECHNO-MANAGEMENT FEST]<br>
+                    [NIT DURGAPUR]
+                </div>
+            </div>
+            <!-- EXPLORE + CONNECT grouped on the right -->
+            <div style="display: flex; flex-direction: row; gap: 60px;">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">EXPLORE</h3>
+                <script>
+                    function triggerFilter(title) {
+                        try {
+                            const isInWork = window.location.pathname.includes('/work') ||
+                                             window.location.hash.includes('work');
+
+                            function applyFilter() {
+                                try {
+                                    // Find the exact side-menu link generated by WebGL app
+                                    const link = document.querySelector('a[title="-> ' + title + '"]');
+                                    if (link) {
+                                        link.click();
+                                    } else if (window.CMSData) {
+                                        CMSData.filter(title.replace(/s$/, '').toLowerCase());
+                                    }
+                                } catch (e) {}
+                            }
+
+                            if (!isInWork) {
+                                // Not in /work yet — find and click the EXPLORE nav button to scroll there first
+                                const exploreBtn = Array.from(document.querySelectorAll('a, button, [role="button"]'))
+                                    .find(el => {
+                                        const t = (el.innerText || el.textContent || '').trim().toUpperCase();
+                                        return t === 'EXPLORE' && !el.closest('#ar-footer');
+                                    });
+                                if (exploreBtn) {
+                                    exploreBtn.click();
+                                    // Wait for WebGL scroll animation to reach the spine section, then filter
+                                    setTimeout(applyFilter, 1400);
+                                } else {
+                                    // Fallback: try firing the goToWork event directly via AppState
+                                    applyFilter();
+                                }
+                            } else {
+                                applyFilter();
+                            }
+                        } catch (e) {}
+                        return false;
+                    }
+                </script>
+                <a href="#" onclick="return triggerFilter('Events');"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [EVENTS]</a>
+                <a href="#" onclick="return triggerFilter('Workshops');"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [WORKSHOPS]</a>
+                <a href="#" onclick="return triggerFilter('Corners');"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [CORNERS]</a>
+                <a href="#" onclick="return triggerFilter('Stage Lineup');"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [STAGE LINEUP]</a>
+                <a href="#" onclick="return triggerFilter('Sponsors');"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [SPONSORS]</a>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">CONNECT</h3>
+                <a href="mailto:arhn@nitdgp.ac.in"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [arhn@nitdgp.ac.in]</a>
+                <a href="https://www.instagram.com/arhn.nitd?stkn=bTBoa2E5eTd4NnV0" target="_blank"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [INSTAGRAM]</a>
+                <a href="https://www.linkedin.com/company/aarohan-nit-durgapur/" target="_blank"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [LINKEDIN]</a>
+                <a href="#" target="_blank"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [FACEBOOK]</a>
+                <a href="https://x.com/aarohan_nitdgp" target="_blank"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [X]</a>
+            </div>
+            </div><!-- end right group -->
+        </footer>
+    </div>
+    <style>
+        /* Trigger hover slides up the footer */
+        #ar-footer-wrapper:hover #ar-footer {
+            transform: translateY(0) !important;
+        }
+
+        footer a:hover {
+            color: #fff !important;
+        }
+
+        @media (max-width: 768px) {
+            #ar-footer {
+                flex-direction: column !important;
+                padding: 20px !important;
+                gap: 30px;
+            }
+        }
+    </style>
 </body>
 
 </html>

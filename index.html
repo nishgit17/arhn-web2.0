@@ -385,71 +385,116 @@
             }).catch(err => console.error("Error loading logo:", err));
 
             function fade() {
-                cv.style.opacity = Math.max(0, 1 - window.scrollY / (window.innerHeight * .8));
+                // Remove fade to ensure logo remains visible
+                // cv.style.opacity = Math.max(0, 1 - window.scrollY / (window.innerHeight * .8));
             }
 
-            addL('scroll', fade, { passive: true });
-            fade();
+            // addL('scroll', fade, { passive: true });
+            // fade();
         });
     </script>
 
-    <footer id="ar-footer" style="
+    <!-- Footer Hover Wrapper -->
+    <div id="ar-footer-wrapper" style="
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
+        height: 40px;
         z-index: 2147483647;
-        background: rgba(10, 0, 0, 0.45);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        color: #fff;
-        font-family: 'nbarchitekt', monospace;
-        border-top: 1px dashed rgba(255, 255, 255, 0.15);
-        box-sizing: border-box;
-        transform: translateY(calc(100% - 40px));
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        pointer-events: auto;
     ">
-        <!-- Hover indicator bar -->
+        <!-- Reveal Footer Trigger -->
         <div
-            style="height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1);">
-            <div style="font-size: 11px; letter-spacing: 3px; color: #aaa;">[ REVEAL FOOTER ]</div>
+            style="height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); width: 100%; position: absolute; bottom: 0; z-index: 10; pointer-events: auto;">
+            <div
+                style="font-size: 11px; letter-spacing: 3px; color: rgba(255, 255, 255, 0.4); text-shadow: 0 0 5px rgba(0,0,0,0.8);">
+                [ REVEAL FOOTER ]</div>
         </div>
 
-        <!-- Footer Content -->
-        <div style="padding: 30px 60px; display: flex; justify-content: space-between;">
-            <div style="display: flex; flex-direction: column; gap: 15px; max-width: 30%;">
-                <img src="/assets/images/ar-logo-rmbg.png" style="width: 120px; margin-bottom: 10px;"
+        <footer id="ar-footer" style="
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 0, 0, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: #fff;
+            font-family: 'nbarchitekt', monospace;
+            border-top: 1px dashed rgba(255, 255, 255, 0.15);
+            box-sizing: border-box;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 60px;
+            pointer-events: auto;
+        ">
+            <!-- Footer Content: Logo on left -->
+            <div style="display: flex; flex-direction: column; max-width: 30%; margin-top: -20px;">
+                <img src="/assets/images/ar-logo-rmbg.png" style="width: 120px; margin-bottom: 0px;"
                     alt="Aarohan Logo">
-                <div style="color: #aaa; font-size: 12px; line-height: 1.6; letter-spacing: 1px;">
+                <div style="color: #aaa; font-size: 12px; line-height: 1.6; letter-spacing: 1px; margin-top: -15px;">
                     [AAROHAN 2026]<br>
                     [ANNUAL TECHNO-MANAGEMENT FEST]<br>
                     [NIT DURGAPUR]
                 </div>
             </div>
-            <script>
-                function triggerSpineScroll(targetText) {
-                    const links = document.querySelectorAll('a.home');
-                    for (let i = 0; i < links.length; i++) {
-                        if (links[i].textContent.toLowerCase().includes(targetText.toLowerCase()) ||
-                            links[i].getAttribute('title') && links[i].getAttribute('title').toLowerCase().includes(targetText.toLowerCase())) {
-                            links[i].click();
-                            break;
-                        }
-                    }
-                }
-            </script>
+            <!-- EXPLORE + CONNECT grouped on the right -->
+            <div style="display: flex; flex-direction: row; gap: 60px;">
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">EXPLORE</h3>
-                <a href="javascript:void(0)" onclick="triggerSpineScroll('event')"
+                <script>
+                    function triggerFilter(title) {
+                        try {
+                            const isInWork = window.location.pathname.includes('/work') ||
+                                             window.location.hash.includes('work');
+
+                            function applyFilter() {
+                                try {
+                                    // Find the exact side-menu link generated by WebGL app
+                                    const link = document.querySelector('a[title="-> ' + title + '"]');
+                                    if (link) {
+                                        link.click();
+                                    } else if (window.CMSData) {
+                                        CMSData.filter(title.replace(/s$/, '').toLowerCase());
+                                    }
+                                } catch (e) {}
+                            }
+
+                            if (!isInWork) {
+                                // Not in /work yet — find and click the EXPLORE nav button to scroll there first
+                                const exploreBtn = Array.from(document.querySelectorAll('a, button, [role="button"]'))
+                                    .find(el => {
+                                        const t = (el.innerText || el.textContent || '').trim().toUpperCase();
+                                        return t === 'EXPLORE' && !el.closest('#ar-footer');
+                                    });
+                                if (exploreBtn) {
+                                    exploreBtn.click();
+                                    // Wait for WebGL scroll animation to reach the spine section, then filter
+                                    setTimeout(applyFilter, 1400);
+                                } else {
+                                    // Fallback: try firing the goToWork event directly via AppState
+                                    applyFilter();
+                                }
+                            } else {
+                                applyFilter();
+                            }
+                        } catch (e) {}
+                        return false;
+                    }
+                </script>
+                <a href="#" onclick="return triggerFilter('Events');"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [EVENTS]</a>
-                <a href="javascript:void(0)" onclick="triggerSpineScroll('workshop')"
+                <a href="#" onclick="return triggerFilter('Workshops');"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
                     [WORKSHOPS]</a>
-                <a href="javascript:void(0)" onclick="triggerSpineScroll('corner')"
+                <a href="#" onclick="return triggerFilter('Corners');"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
                     [CORNERS]</a>
-                <a href="javascript:void(0)" onclick="triggerSpineScroll('sponsor')"
+                <a href="#" onclick="return triggerFilter('Stage Lineup');"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [STAGE LINEUP]</a>
+                <a href="#" onclick="return triggerFilter('Sponsors');"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
                     [SPONSORS]</a>
                 <a href="javascript:void(0)" onclick="triggerSpineScroll('stall')"
@@ -472,25 +517,24 @@
                 <a href="https://x.com/aarohan_nitdgp" target="_blank"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [X]</a>
             </div>
-        </div>
-    </footer>
+            </div><!-- end right group -->
+        </footer>
+    </div>
     <style>
         /* Trigger hover slides up the footer */
-        #ar-footer:hover {
+        #ar-footer-wrapper:hover #ar-footer {
             transform: translateY(0) !important;
         }
-    </style>
-    <style>
+
         footer a:hover {
             color: #fff !important;
         }
 
         @media (max-width: 768px) {
-            footer {
+            #ar-footer {
                 flex-direction: column !important;
                 padding: 20px !important;
                 gap: 30px;
-                position: absolute !important;
             }
         }
     </style>

@@ -2090,7 +2090,7 @@
 	"INPUT_GROUP_home_scene_scene_name": "main_elements",
 	"INPUT_GROUP_homeScene_group_0_name": "main",
 	"INPUT_GROUP_homeScene_group_1_name": "secondary",
-	"INPUT_Element_4_About_text3d_text": "FOUNDED IN 2001\n\nAarohan is the second largest techno-managerial festival in Eastern India and the official tech fest of NIT Durgapur.\n\nWe bring together brilliant minds for a thrilling showcase of innovation, competitive gaming, and groundbreaking technology.",
+	"INPUT_Element_4_About_text3d_text": "SINCE 2001\n\nAarohan is the second largest techno-managerial festival in Eastern India and the official tech fest of NIT Durgapur.\n\nWe bring together brilliant minds for a thrilling showcase of innovation, competitive gaming, and groundbreaking technology.",
 	"INPUT_Element_4_About_text3d_data": "{\"font\":\"NBArchitektStd-Regular\",\"size\":0.075,\"lineHeight\":2,\"width\":2}",
 	"INPUT_Element_4_About_text3d_fontStyle": "font: NBArchitektStd-Regular\nsize: 0.075\nlineHeight: 2\nwidth: 2",
 	"INPUT_Element_4_About_text3d_renderRetina": false,
