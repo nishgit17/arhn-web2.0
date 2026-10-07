@@ -431,7 +431,7 @@
             pointer-events: auto;
         ">
             <!-- Footer Content: Logo on left -->
-            <div style="display: flex; flex-direction: column; max-width: 30%; margin-top: -20px;">
+            <div class="ar-logo-col" style="display: flex; flex-direction: column; max-width: 30%; margin-top: -20px;">
                 <img src="/assets/images/ar-logo-rmbg.png" style="width: 120px; margin-bottom: 0px;"
                     alt="Aarohan Logo">
                 <div style="color: #aaa; font-size: 12px; line-height: 1.6; letter-spacing: 1px; margin-top: -15px;">
@@ -441,7 +441,7 @@
                 </div>
             </div>
             <!-- EXPLORE + CONNECT grouped on the right -->
-            <div style="display: flex; flex-direction: row; gap: 60px;">
+            <div class="ar-links-group" style="display: flex; flex-direction: row; gap: 60px;">
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">EXPLORE</h3>
                 <script>
@@ -492,7 +492,7 @@
                 <a href="#" onclick="return triggerFilter('Corners');"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
                     [CORNERS]</a>
-                <a href="#" onclick="return triggerFilter('Stage Lineup');"
+                <a href="javascript:void(0)" onclick="triggerSpineScroll('stall')"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [STAGE LINEUP]</a>
                 <a href="#" onclick="return triggerFilter('Sponsors');"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
@@ -531,8 +531,26 @@
         @media (max-width: 768px) {
             #ar-footer {
                 flex-direction: column !important;
-                padding: 20px !important;
-                gap: 30px;
+                padding: 20px 20px 40px 20px !important;
+                gap: 40px !important;
+                align-items: center !important;
+                text-align: center !important;
+            }
+            .ar-logo-col {
+                max-width: 100% !important;
+                align-items: center !important;
+                text-align: center !important;
+                margin-top: 0 !important;
+            }
+            .ar-links-group {
+                flex-direction: column !important;
+                gap: 40px !important;
+                width: 100% !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            .ar-links-group > div {
+                align-items: center !important;
             }
         }
     </style>
