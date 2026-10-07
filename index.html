@@ -147,7 +147,7 @@
             }
         }
     </style>
-    <script>!function () { window._ENV_ = 'production'; window._CMS_ = "%CMS%"; window._UNSUPPORTED_PAGE_ = "unsupported.html"; try { eval("let obj = {}; obj?.prop") } catch (e) { window.location.replace(window._UNSUPPORTED_PAGE_); return } window._CACHE_ = "1746999829739", window.UIL_STATIC_PATH = "assets/data/uil.1746999829739.json?v=aarohan-20261007-9"; var p, s = "assets/js/app." + window._CACHE_ + ".js?v=aarohan-20261007-9", h = document.head, e = document.createElement("link"); e.href = s, e.rel = "preload", e.as = "script", h.appendChild(e), (e = document.createElement("script")).src = s, e.async = ! 0, h.appendChild(e) }();</script>
+    <script>!function () { window._ENV_ = 'production'; window._CMS_ = "%CMS%"; window._UNSUPPORTED_PAGE_ = "unsupported.html"; try { eval("let obj = {}; obj?.prop") } catch (e) { window.location.replace(window._UNSUPPORTED_PAGE_); return } window._CACHE_ = "1746999829739", window.UIL_STATIC_PATH = "assets/data/uil.1746999829739.json?v=aarohan-20261007-9"; var p, s = "assets/js/app." + window._CACHE_ + ".js?v=aarohan-20261007-9", h = document.head, e = document.createElement("link"); e.href = s, e.rel = "preload", e.as = "script", h.appendChild(e), (e = document.createElement("script")).src = s, e.async = !0, h.appendChild(e) }();</script>
     <script src="assets/js/card-media.js?v=aarohan-20261007-8"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J7TMDT4F8N"></script>
     <script>
@@ -427,20 +427,33 @@
                     [NIT DURGAPUR]
                 </div>
             </div>
+            <script>
+                function triggerSpineScroll(targetText) {
+                    const links = document.querySelectorAll('a.home');
+                    for (let i = 0; i < links.length; i++) {
+                        if (links[i].textContent.toLowerCase().includes(targetText.toLowerCase()) ||
+                            links[i].getAttribute('title') && links[i].getAttribute('title').toLowerCase().includes(targetText.toLowerCase())) {
+                            links[i].click();
+                            break;
+                        }
+                    }
+                }
+            </script>
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">EXPLORE</h3>
-                <a href="/events"
+                <a href="javascript:void(0)" onclick="triggerSpineScroll('event')"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [EVENTS]</a>
-                <a href="/games" style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
-                    [GAMES]</a>
-                <a href="/workshops"
+                <a href="javascript:void(0)" onclick="triggerSpineScroll('workshop')"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
                     [WORKSHOPS]</a>
-                <a href="/stalls"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [STALLS]</a>
-                <a href="/sponsors"
+                <a href="javascript:void(0)" onclick="triggerSpineScroll('corner')"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                    [CORNERS]</a>
+                <a href="javascript:void(0)" onclick="triggerSpineScroll('sponsor')"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
                     [SPONSORS]</a>
+                <a href="javascript:void(0)" onclick="triggerSpineScroll('stall')"
+                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [STALLS]</a>
             </div>
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">CONNECT</h3>
