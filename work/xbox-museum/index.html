@@ -483,6 +483,25 @@
                         } catch (e) {}
                         return false;
                     }
+
+                    // Auto-filter to events initially
+                    window.addEventListener('DOMContentLoaded', () => {
+                        const observer = new MutationObserver(() => {
+                            const link = document.querySelector('a[title="-> Events"]');
+                            if (link && !window.hasAutoFiltered) {
+                                window.hasAutoFiltered = true;
+                                setTimeout(() => {
+                                    if (window.CMSData && typeof window.CMSData.filter === 'function') {
+                                        window.CMSData.filter('event');
+                                    } else {
+                                        link.click();
+                                    }
+                                }, 100);
+                                observer.disconnect();
+                            }
+                        });
+                        observer.observe(document.body, { childList: true, subtree: true });
+                    });
                 </script>
                 <a href="#" onclick="return triggerFilter('Events');"
                     style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [EVENTS]</a>
