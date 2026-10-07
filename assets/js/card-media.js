@@ -1,5 +1,12 @@
 /* Use the Drive artwork as the spine card texture instead of MP4 posters. */
 (function installCardMediaSource() {
+    // The original Lab scene has a hard-coded atlab.io click target. Keep the
+    // scene visual-only and block only that destination.
+    const nativeOpen = window.open;
+    window.open = function (url, ...args) {
+        if (String(url || '').toLowerCase().includes('atlab.io')) return null;
+        return nativeOpen.call(window, url, ...args);
+    };
     const nativeFetch = window.fetch.bind(window);
     const projectsUrl = 'assets/data/projects.json';
     const driveUrl = 'assets/data/aarohandata.json';

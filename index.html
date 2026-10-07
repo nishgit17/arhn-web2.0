@@ -462,6 +462,13 @@
         </div>
     </footer>
     <style>
+        /* The Lab panel should remain purely visual; hide the footer link bar
+           that appears over the lower-center area and captures clicks there. */
+        #ar-footer {
+            display: none !important;
+            pointer-events: none !important;
+        }
+
         /* Trigger hover slides up the footer */
         #ar-footer:hover {
             transform: translateY(0) !important;
