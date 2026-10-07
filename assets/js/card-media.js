@@ -5,16 +5,21 @@
     const driveUrl = 'assets/data/aarohandata.json';
     window.fetch = function cardMediaFetch(input, init) {
         const url = typeof input === 'string' ? input : input && input.url;
-        if (!url || !url.endsWith(projectsUrl)) return nativeFetch(input, init);
+        if (!url || (!url.endsWith(projectsUrl) && !url.endsWith(driveUrl))) return nativeFetch(input, init);
         return nativeFetch(driveUrl, init).then(response => response.json()).then(driveCards => {
             // Aarohan is the sole source of card content. The engine expects a
             // CMS-shaped video object, so provide an image-backed compatibility
             // object without reintroducing any projects.json fields.
             const localImageIndex = new Map(driveCards.map((card, index) => [card.id, index]));
+            const timelineValue = card => {
+                const [day, month, year] = String(card.date || '').split('/').map(Number);
+                const [hours = 0, minutes = 0, seconds = 0] = String(card.time || '').split(':').map(Number);
+                return day && month && year
+                    ? new Date(year, month - 1, day, hours || 0, minutes || 0, seconds || 0).getTime()
+                    : Number.MAX_SAFE_INTEGER;
+            };
             const transformed = driveCards.sort((a, b) => {
-                const left = Date.parse(a.completionDate || a.date || '') || 0;
-                const right = Date.parse(b.completionDate || b.date || '') || 0;
-                return left - right;
+                return timelineValue(a) - timelineValue(b);
             }).map((card, index) => {
                 const driveId = card.imageURL ? new URL(card.imageURL).searchParams.get('id') : null;
                 // lh3 serves the file directly and sends permissive CORS headers;
@@ -27,6 +32,7 @@
                     ? `assets/images/aarohan-cards/card-${localIndex}.${localExtension}`
                     : 'assets/images/ar-logo.png';
                 const category = String(card.type || 'event').toLowerCase();
+                const timeline = timelineValue(card);
                 const meta = [
                     `Date : ${card.date || '-'}`,
                     `Time : ${card.time || '-'}`,
@@ -35,6 +41,7 @@
                 return {
                 ...card,
                 index,
+                priority: timeline,
                 tags: category.toUpperCase(),
                 imageURL,
                 // The spine label uses subhead; keep the full description in
