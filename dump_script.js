@@ -1,8 +1,11 @@
-const fs = require('fs');
-const content = fs.readFileSync('assets/js/app.1746999829739.js', 'utf8');
-const idx = content.indexOf('NavUIItem",refName:"work"');
-if(idx !== -1) {
-    console.log(content.substring(idx - 150, idx + 400));
-} else {
-    console.log('Not found');
-}
+const c = require('fs').readFileSync('assets/js/app.1746999829739.js','utf8');
+
+// Get the full sortAndInitialize function  
+const i1 = c.indexOf('sortAndInitialize');
+console.log('=== sortAndInitialize ===');
+console.log(c.substring(i1-100, i1+1200));
+
+// Get initRoute function
+const i2 = c.indexOf('async function initRoute()');
+console.log('\n\n=== initRoute ===');
+console.log(c.substring(i2-50, i2+1000));
