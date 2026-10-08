@@ -17,6 +17,23 @@
     "completionDate": "2026-10-11T18:00:00Z"
   },
   {
+    "id": "corner-techmela",
+    "slug": "techmela-corner",
+    "name": "Techmela",
+    "type": "corner",
+    "description": "\"Boot up your brilliance. The next big thing might just be yours.\"\nTECHMELA is innovation in full motion, where imagination turns into action and bold ideas come alive. It is a celebration of creativity, curiosity, and the fearless drive to break boundaries and rewrite what is possible.\nBring your vision to life, showcase your innovations, and win exciting prizes and certificates. Don't just imagine the future. Build it.",
+    "clientName": "Aarohan Corners",
+    "tags": "CORNER",
+    "priority": 2,
+    "uiColor": "9d6b70",
+    "date": "09/10/2026-10/10/2026",
+    "time": "18:00:00",
+    "venue": "OVALS ARENA",
+    "registrationURL": "https://docs.google.com/forms/d/e/1FAIpQLSffNNeyYevChBIZJ0iy8lB32uKh3SIKL0KId6bxteSJ00rjPQ/viewform",
+    "imageURL": "https://drive.google.com/thumbnail?id=1H93tC6VRHVCWy9M2j5_bPXhrZlgddEvr&sz=w1200",
+    "completionDate": "2026-10-10T18:00:00Z"
+  },
+  {
     "id": "corner-glug-corner",
     "slug": "glug-corner",
     "name": "GLUG Corner",
