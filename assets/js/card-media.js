@@ -60,8 +60,18 @@
                     ? new Date(year, month - 1, day, hours || 0, minutes || 0, seconds || 0).getTime()
                     : Number.MAX_SAFE_INTEGER;
             };
+            const categoryName = card => String(card.type || 'event').toLowerCase();
+            // Keep the source array in timeline order.  The app's category
+            // filter applies its own ordering for the intentionally random
+            // categories; the stable priority below is used by the patched
+            // filter for the schedule categories.
             const transformed = driveCards.sort((a, b) => {
-                return timelineValue(a) - timelineValue(b);
+                const aCategory = categoryName(a);
+                const bCategory = categoryName(b);
+                const scheduled = value => ['event', 'workshop', 'stall'].includes(categoryName(value));
+                if (scheduled(a) && scheduled(b)) return timelineValue(a) - timelineValue(b);
+                if (scheduled(a) !== scheduled(b)) return scheduled(a) ? -1 : 1;
+                return 0;
             }).map((card, index) => {
                 const driveId = card.imageURL ? new URL(card.imageURL).searchParams.get('id') : null;
                 // lh3 serves the file directly and sends permissive CORS headers;
@@ -79,7 +89,7 @@
                 const imageURL = driveId
                     ? `assets/images/aarohan-cards/optimized/${imageName}.${localExtension}`
                     : 'assets/images/ar-logo.png';
-                const category = String(card.type || 'event').toLowerCase();
+                const category = categoryName(card);
                 const timeline = timelineValue(card);
                 const meta = category === 'sponsor' ? '' : [
                     `Date : ${card.date || '-'}`,

@@ -152,6 +152,117 @@
     </style>
     <script>!function () { window._ENV_ = 'production'; window._CMS_ = "%CMS%"; window._UNSUPPORTED_PAGE_ = "unsupported.html"; try { eval("let obj = {}; obj?.prop") } catch (e) { window.location.replace(window._UNSUPPORTED_PAGE_); return } window._CACHE_ = "1746999829739", window.UIL_STATIC_PATH = "assets/data/uil.1746999829739.json?v=aarohan-20261007-9"; var p, s = "assets/js/app." + window._CACHE_ + ".js?v=aarohan-20261007-9", h = document.head, e = document.createElement("link"); e.href = s, e.rel = "preload", e.as = "script", h.appendChild(e), (e = document.createElement("script")).src = s, e.async = !0, h.appendChild(e) }();</script>
     <script src="assets/js/card-media.js?v=aarohan-20261009-3"></script>
+    <script>
+        // ChatDOM creates the detail close link dynamically. Its bundled
+        // handler is throttled together with category filters, so repeated
+        // opens can leave later close links inert. Handle only that link and
+        // clear the active project directly.
+        document.addEventListener('click', event => {
+            const link = event.target.closest?.('a[title="<- Close"]');
+            if (!link || !window.AppState) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            AppState.set('Work/project', null);
+            // Also restore the work/spine scroll position. Clearing the
+            // project alone only hides the detail scene; it does not move
+            // the controller back from the detail route.
+            AppState.set('ViewController/navigate', 'work');
+        }, true);
+
+        const installScrollClosePrompt = () => {
+            const convertClosePrompt = () => {
+                document.querySelectorAll('a[title="<- Close"]').forEach(link => {
+                    link.textContent = '↕ SCROLL TO CLOSE';
+                    link.dataset.scrollClosePrompt = 'true';
+                    link.removeAttribute('title');
+                    link.removeAttribute('href');
+                    link.onclick = null;
+                    link.style.pointerEvents = 'none';
+                    link.style.cursor = 'default';
+                });
+            };
+            new MutationObserver(convertClosePrompt).observe(document.body, { childList: true, subtree: true });
+            convertClosePrompt();
+            // The bundled UI animates the label after insertion; keep the
+            // final prompt stable while leaving the link non-interactive.
+            window.setInterval(() => {
+                document.querySelectorAll('a[data-scroll-close-prompt="true"]').forEach(link => {
+                    if (link.textContent !== '↕ SCROLL TO CLOSE') link.textContent = '↕ SCROLL TO CLOSE';
+                    link.style.pointerEvents = 'none';
+                });
+                convertClosePrompt();
+            }, 100);
+        };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', installScrollClosePrompt, { once: true });
+        } else {
+            installScrollClosePrompt();
+        }
+    </script>
+    <script>
+        // A detail close changes Router/state while the original pointer
+        // gesture is still finishing. Without a brief shield, pointerup can
+        // land on the spine card underneath and open it again.
+        (() => {
+            let previousState = '';
+            const installCloseTransitionShield = () => {
+                if (!window.AppState || typeof AppState.bind !== 'function' || window.__closeShieldInstalled) return;
+                window.__closeShieldInstalled = true;
+                AppState.bind('Router/state', state => {
+                    const nextState = String(state || '');
+                    const leavingDetail = previousState.startsWith('work/') && nextState === 'work';
+                    previousState = nextState;
+                    if (!leavingDetail) return;
+                    const shield = document.createElement('div');
+                    shield.setAttribute('aria-hidden', 'true');
+                    shield.style.cssText = 'position:fixed;inset:0;z-index:2147483646;background:transparent;pointer-events:auto;touch-action:none;';
+                    document.body.appendChild(shield);
+                    window.setTimeout(() => shield.remove(), 1100);
+                });
+            };
+            const timer = window.setInterval(() => {
+                installCloseTransitionShield();
+                if (window.__closeShieldInstalled) window.clearInterval(timer);
+            }, 100);
+        })();
+
+        // Keep schedule categories chronological after the bundled app's
+        // CMS filter; corners and sponsors deliberately retain random order.
+        window.addEventListener('DOMContentLoaded', () => {
+            const installScheduleOrdering = () => {
+                const cms = window.CMSData;
+                if (!cms || typeof cms.filter !== 'function' || cms.__scheduleOrderingInstalled) return;
+                const originalFilter = cms.filter.bind(cms);
+                const scheduleTags = new Set(['event', 'workshop', 'stall']);
+                const timeOf = item => {
+                    const [day, month, year] = String(item.date || '').split('/').map(Number);
+                    const [hours = 0, minutes = 0, seconds = 0] = String(item.time || '').split(':').map(Number);
+                    return day && month && year
+                        ? new Date(year, month - 1, day, hours || 0, minutes || 0, seconds || 0).getTime()
+                        : Number.MAX_SAFE_INTEGER;
+                };
+                cms.filter = tag => {
+                    if (!scheduleTags.has(String(tag).toLowerCase())) return originalFilter(tag);
+                    // The bundled CMS implementation calls .shuffle() for
+                    // every tag. Temporarily make that operation stable for
+                    // schedule categories only, then restore it immediately.
+                    const shuffle = Array.prototype.shuffle;
+                    if (shuffle) Array.prototype.shuffle = function () { return this; };
+                    let result;
+                    try { result = originalFilter(tag); } finally {
+                        if (shuffle) Array.prototype.shuffle = shuffle;
+                    }
+                    const pages = cms.pages || cms.items || cms.data;
+                    if (pages && typeof pages.sort === 'function') pages.sort((a, b) => timeOf(a) - timeOf(b));
+                    return result;
+                };
+                cms.__scheduleOrderingInstalled = true;
+            };
+            const observer = new MutationObserver(installScheduleOrdering);
+            observer.observe(document.body, { childList: true, subtree: true });
+            installScheduleOrdering();
+        });
+    </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J7TMDT4F8N"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
