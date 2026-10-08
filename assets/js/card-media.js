@@ -81,7 +81,7 @@
                     : 'assets/images/ar-logo.png';
                 const category = String(card.type || 'event').toLowerCase();
                 const timeline = timelineValue(card);
-                const meta = [
+                const meta = category === 'sponsor' ? '' : [
                     `Date : ${card.date || '-'}`,
                     `Time : ${card.time || '-'}`,
                     `Venue : ${card.venue || '-'}`
@@ -96,7 +96,8 @@
                     // body for the detail view and show the timeline metadata here.
                     subhead: meta,
                     cardMeta: meta,
-                    body: card.description,
+                    description: card.description,
+                    projectURL: card.registrationURL,
                     video: {
                         thumbnail: imageURL,
                         url: imageURL,
