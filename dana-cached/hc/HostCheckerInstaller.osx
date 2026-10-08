@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, viewport-fit=cover">
     <base href="/">
     <title>Aarohan · Techno-Management Fest</title>
-    <meta name="description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur, since 2001. ">
+    <meta name="description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur, since 2003. ">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Aarohan · Techno-Management Fest">
-    <meta property="og:description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur, since 2001. ">
+    <meta property="og:description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur, since 2003. ">
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="Aarohan · Techno-Management Fest">
-    <meta property="twitter:description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur, since 2001. ">
+    <meta property="twitter:description" content="Aarohan is the Annual Techno-Management Fest of NIT Durgapur, since 2003. ">
     <meta name="apple-mobile-web-app-title" content="Aarohan">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">	
