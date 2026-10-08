@@ -204,23 +204,6 @@
     "completionDate": "2025-03-22T09:00:00Z"
   },
   {
-    "id": "workshop-006",
-    "slug": "unlock-the-future-with-cloud-computing-data-science-and-iot-workshop-workshop",
-    "name": "Unlock the future with Cloud Computing Data Science and IOT workshop",
-    "type": "workshop",
-    "description": "*Unlock the Future with IoT and Cloud Computing in Data Science*\n\nAre you ready to dive into the world of *IoT, Cloud Computing, and Data Science* with a live project demonstration? This workshop is open to students from all departments, and no prior experience is mandatory. Even if you’re completely new to these technologies, we will guide you step by step from the basics to practical applications.\n\n*Key Takeaways:*\n\t•\t*Completion Certificate & Learning Resources* – Strength your CV to secure placement in a promising field.\n\t•\t*Live Project Demonstration* – Learn from scratch with real-world applications.\n\t•\t*Beginner Friendly* – No prior knowledge needed, everything starts from the basics.\n\t•\t*Build & Implement* – Gain industry-relevant skills through practical sessions.\n\t•\t*Learn from Industry Experts* – Get insights and training from professionals.\n\t•\t*Unlock Internship Opportunities* – Boost your career with hands-on experience.",
-    "clientName": "Aarohan Workshops",
-    "tags": "WORKSHOP",
-    "priority": 1,
-    "uiColor": "b8b8b8",
-    "date": "22/03/2025",
-    "time": "09:12:00",
-    "venue": "NAB",
-    "registrationURL": "https://shorturl.at/UF035",
-    "imageURL": "https://drive.google.com/thumbnail?id=1CX1PZAan2_kX6IRtw4FnRWpNGRyxOP6n&sz=w1200",
-    "completionDate": "2025-03-22T09:12:00Z"
-  },
-  {
     "id": "workshop-019",
     "slug": "artificial-intelligence-and-machine-learning-workshop",
     "name": "Artificial intelligence and machine learning",
