@@ -67,11 +67,15 @@
                 // lh3 serves the file directly and sends permissive CORS headers;
                 // Drive's thumbnail redirect often taints WebGL image textures.
                 const localIndex = localImageIndex.get(card.id);
-                const localExtension = [2, 8, 10, 21].includes(localIndex) ? 'png' : 'jpg';
+                // Use the small WebP derivatives for WebGL startup. The source
+                // posters remain available for detail views/downloads, but
+                // loading all full-resolution PNG/JPEG files blocks the scene
+                // around the 75% asset-loader mark on a cold visit.
+                const localExtension = 'webp';
                 // Same-origin files avoid Drive redirects/CORS entirely and
                 // are safe for texImage2D once ImageDecoder has completed.
                 const imageURL = driveId
-                    ? `assets/images/aarohan-cards/card-${localIndex}.${localExtension}`
+                    ? `assets/images/aarohan-cards/optimized/card-${localIndex}.${localExtension}`
                     : 'assets/images/ar-logo.png';
                 const category = String(card.type || 'event').toLowerCase();
                 const timeline = timelineValue(card);
