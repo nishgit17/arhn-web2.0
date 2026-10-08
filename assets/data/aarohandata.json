@@ -457,5 +457,22 @@
     "registrationURL": "https://bgmi.arhn.in/",
     "imageURL": "https://drive.google.com/thumbnail?id=1PS_of6e6N1HXeL90cEZc88MCJYRZKZn4&sz=w1200",
     "completionDate": "2026-10-09T18:00:00Z"
+  },
+  {
+    "id": "event-valorant-vrc",
+    "slug": "valorant-virtual-realm-carnival",
+    "name": "VALORANT VIRTUAL REALM CARNIVAL",
+    "type": "event",
+    "description": "Bring your squad, trust your instincts and put everything to be victorious.",
+    "clientName": "Aarohan Events",
+    "tags": "EVENT",
+    "priority": 1,
+    "uiColor": "ff4655",
+    "date": "10/10/2026",
+    "time": "10:00:00",
+    "venue": "NAB 402, NIT Durgapur",
+    "registrationURL": "https://valorant.arhn.in/",
+    "imageURL": "https://drive.google.com/thumbnail?id=1Wb98pa8ZepQJ5WHQq29jsnZ5su8RxKF_&sz=w1200",
+    "completionDate": "2026-10-10T18:00:00Z"
   }
 ]
