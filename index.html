@@ -149,16 +149,6 @@
             }
         }
 
-        #app-loading { position:fixed; inset:0; z-index:2147483646; display:grid; place-items:center; background:#050505; color:#f2f2f2; font:400 12px/1.5 nbarchitekt,Arial,sans-serif; letter-spacing:.16em; transition:opacity .45s ease,visibility .45s ease; }
-        #app-loading.is-ready { opacity:0; visibility:hidden; pointer-events:none; }
-        #app-loading__content { width:min(320px,78vw); text-align:center; }
-        #app-loading__brand { margin-bottom:24px; font-size:18px; letter-spacing:.3em; }
-        #app-loading__message { min-height:20px; color:rgba(255,255,255,.7); }
-        #app-loading__track { height:2px; margin:18px 0 12px; background:rgba(255,255,255,.18); overflow:hidden; }
-        #app-loading__bar { width:22%; height:100%; background:#fff; animation:app-loading-pulse 1.5s ease-in-out infinite; }
-        #app-loading__retry { display:none; margin-top:20px; padding:9px 16px; border:1px solid rgba(255,255,255,.5); background:transparent; color:#fff; font:inherit; letter-spacing:.12em; cursor:pointer; }
-        @keyframes app-loading-pulse { 0%,100% { transform:translateX(-110%); } 50% { transform:translateX(430%); } }
-        @media (prefers-reduced-motion:reduce) { #app-loading__bar { animation:none; width:55%; } }
     </style>
     <script>!function () { window._ENV_ = 'production'; window._CMS_ = "%CMS%"; window._UNSUPPORTED_PAGE_ = "unsupported.html"; try { eval("let obj = {}; obj?.prop") } catch (e) { window.location.replace(window._UNSUPPORTED_PAGE_); return } window._CACHE_ = "1746999829739", window.UIL_STATIC_PATH = "assets/data/uil.1746999829739.json?v=aarohan-20261007-9"; var p, s = "assets/js/app." + window._CACHE_ + ".js?v=aarohan-20261007-9", h = document.head, e = document.createElement("link"); e.href = s, e.rel = "preload", e.as = "script", h.appendChild(e), (e = document.createElement("script")).src = s, e.async = !0, h.appendChild(e) }();</script>
     <script src="assets/js/card-media.js?v=aarohan-20261007-8"></script>
@@ -172,9 +162,6 @@
 </head>
 
 <body>
-    <div id="app-loading" role="status" aria-live="polite" aria-label="Loading Aarohan">
-        <div id="app-loading__content"><div id="app-loading__brand">AAROHAN 2026</div><div id="app-loading__message">Preparing the experience…</div><div id="app-loading__track" aria-hidden="true"><div id="app-loading__bar"></div></div><button id="app-loading__retry" type="button">TRY AGAIN</button></div>
-    </div>
     <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
         <filter id="red-black-silver-theme">
             <!-- Reduced red intensity, shifted more towards a silver/grayscale baseline -->
@@ -253,16 +240,10 @@
 
     <script>
         // Particle Logo Implementation (Translated from React)
-        document.addEventListener("DOMContentLoaded", () => {
-            const loading = document.getElementById('app-loading');
-            const message = document.getElementById('app-loading__message');
-            const retry = document.getElementById('app-loading__retry');
-            let ready = false;
-            const finish = () => { if (ready) return; ready = true; message.textContent = 'Ready'; setTimeout(() => loading.classList.add('is-ready'), 180); };
-            const observer = new MutationObserver(() => { if (document.querySelector('#Stage canvas, canvas[data-gl-canvas]')) { message.textContent = 'Finishing setup…'; setTimeout(finish, 350); observer.disconnect(); } });
-            observer.observe(document.body, { childList:true, subtree:true });
-            window.addEventListener('load', () => setTimeout(finish, 700), { once:true });
-            setTimeout(() => { if (!ready) { message.textContent = 'This is taking longer than usual. Your connection may be slow.'; retry.style.display = 'inline-block'; retry.onclick = () => location.reload(); } }, 12000);
+        window.addEventListener("load", () => {
+            // Decorative particles must never compete with the WebGL scene or
+            // its first images during the initial render.
+            setTimeout(() => {
             const cv = document.createElement("canvas");
             cv.style.position = 'fixed';
             cv.style.top = '0';
@@ -281,7 +262,7 @@
             const cx = cv.getContext('2d', { willReadFrequently: true });
             const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
             let W, H, dpr, S, CX, CY, mouse = { x: -999, y: -999 };
-            const N = 2800, P = [];
+            const N = 900, P = [];
             let targetPts = [];
 
             function size() {
@@ -416,7 +397,8 @@
 
             // addL('scroll', fade, { passive: true });
             // fade();
-        });
+            }, 1200);
+        }, { once: true });
     </script>
 
     <!-- Footer Hover Wrapper -->
