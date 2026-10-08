@@ -556,6 +556,78 @@
             </div><!-- end right group -->
         </footer>
     </div>
+
+    <!-- Transparent overlay to capture taps on the 3D "← CLOSE" canvas area -->
+    <div id="work-close-tap-zone" style="
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        z-index: 9999;
+        background: transparent;
+        cursor: pointer;
+    "></div>
+    <script>
+    (function() {
+        var tapZone = document.getElementById('work-close-tap-zone');
+        var isWorkDetail = false;
+
+        function doClose() {
+            try {
+                if (window.AppState && typeof AppState.set === 'function') {
+                    AppState.set('Work/project', null);
+                } else if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = '/work';
+                }
+            } catch(e) {
+                try { window.history.back(); } catch(e2) { window.location.href = '/work'; }
+            }
+        }
+
+        tapZone.addEventListener('click', doClose);
+        tapZone.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            doClose();
+        });
+
+        function setWorkDetail(open) {
+            isWorkDetail = open;
+            tapZone.style.display = open ? 'block' : 'none';
+        }
+
+        // Hook into AppState directly for reliable open/close detection
+        function hookAppState() {
+            if (window.AppState && typeof AppState.bind === 'function') {
+                AppState.bind('Work/project', function(data) {
+                    setWorkDetail(!!data);
+                });
+                return true;
+            }
+            return false;
+        }
+
+        // Retry until AppState is available
+        var hookInterval = setInterval(function() {
+            if (hookAppState()) clearInterval(hookInterval);
+        }, 100);
+
+        // URL polling as additional fallback
+        setInterval(function() {
+            var inDetail = //work/[a-z0-9-]+/.test(window.location.pathname);
+            if (inDetail !== isWorkDetail) setWorkDetail(inDetail);
+        }, 400);
+
+        window.addEventListener('popstate', function() {
+            var inDetail = //work/[a-z0-9-]+/.test(window.location.pathname);
+            setWorkDetail(inDetail);
+        });
+    })();
+    </script>
+
     <style>
         /* Trigger hover slides up the footer */
         #ar-footer-wrapper:hover #ar-footer {
