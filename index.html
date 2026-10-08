@@ -29,7 +29,8 @@
     <link rel="manifest" href="assets/meta/manifest.json">
     <link rel="mask-icon" href="assets/meta/safari-pinned-tab.svg" color="#333333">
     <link rel="preload" as="image" href="assets/images/ar-logo.png" fetchpriority="high">
-    <link rel="preload" as="font" href="assets/fonts/NBArchitektStd-Regular-export/NBArchitektStd-Regular.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="assets/fonts/NBArchitektStd-Regular-export/NBArchitektStd-Regular.woff2"
+        type="font/woff2" crossorigin>
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#000000">
     <style type="text/css">
@@ -148,10 +149,9 @@
                 --safe-area-inset-left: env(safe-area-inset-left)
             }
         }
-
     </style>
     <script>!function () { window._ENV_ = 'production'; window._CMS_ = "%CMS%"; window._UNSUPPORTED_PAGE_ = "unsupported.html"; try { eval("let obj = {}; obj?.prop") } catch (e) { window.location.replace(window._UNSUPPORTED_PAGE_); return } window._CACHE_ = "1746999829739", window.UIL_STATIC_PATH = "assets/data/uil.1746999829739.json?v=aarohan-20261007-9"; var p, s = "assets/js/app." + window._CACHE_ + ".js?v=aarohan-20261007-9", h = document.head, e = document.createElement("link"); e.href = s, e.rel = "preload", e.as = "script", h.appendChild(e), (e = document.createElement("script")).src = s, e.async = !0, h.appendChild(e) }();</script>
-    <script src="assets/js/card-media.js?v=aarohan-20261007-8"></script>
+    <script src="assets/js/card-media.js?v=aarohan-20261008-1"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J7TMDT4F8N"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -244,166 +244,166 @@
             // Decorative particles must never compete with the WebGL scene or
             // its first images during the initial render.
             setTimeout(() => {
-            const cv = document.createElement("canvas");
-            cv.style.position = 'fixed';
-            cv.style.top = '0';
-            cv.style.left = '0';
-            cv.style.width = '100%';
-            cv.style.height = '100%';
-            cv.style.pointerEvents = 'none'; // Don't block interactions below
-            cv.style.zIndex = '2147483647'; // Ensure it's above the WebGL background and overlays
-            document.body.appendChild(cv);
+                const cv = document.createElement("canvas");
+                cv.style.position = 'fixed';
+                cv.style.top = '0';
+                cv.style.left = '0';
+                cv.style.width = '100%';
+                cv.style.height = '100%';
+                cv.style.pointerEvents = 'none'; // Don't block interactions below
+                cv.style.zIndex = '2147483647'; // Ensure it's above the WebGL background and overlays
+                document.body.appendChild(cv);
 
-            let alive = true;
-            const _l = [];
-            const addL = (a, b, c) => { window.addEventListener(a, b, c); _l.push([a, b, c]); };
-            const RAF = f => { if (alive) requestAnimationFrame(f); };
+                let alive = true;
+                const _l = [];
+                const addL = (a, b, c) => { window.addEventListener(a, b, c); _l.push([a, b, c]); };
+                const RAF = f => { if (alive) requestAnimationFrame(f); };
 
-            const cx = cv.getContext('2d', { willReadFrequently: true });
-            const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-            let W, H, dpr, S, CX, CY, mouse = { x: -999, y: -999 };
-            const N = 900, P = [];
-            let targetPts = [];
+                const cx = cv.getContext('2d', { willReadFrequently: true });
+                const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+                let W, H, dpr, S, CX, CY, mouse = { x: -999, y: -999 };
+                const N = 900, P = [];
+                let targetPts = [];
 
-            function size() {
-                dpr = Math.min(devicePixelRatio || 1, 2);
-                W = window.innerWidth;
-                H = window.innerHeight;
-                cv.width = W * dpr;
-                cv.height = H * dpr;
-                cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                function size() {
+                    dpr = Math.min(devicePixelRatio || 1, 2);
+                    W = window.innerWidth;
+                    H = window.innerHeight;
+                    cv.width = W * dpr;
+                    cv.height = H * dpr;
+                    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-                // Top-Left positioning with responsive scale
-                if (W < 700) {
-                    S = 80 * 0.65; // Smaller scale on mobile
-                    CX = 20 + (S * 0.5);
-                    CY = 20 + (S * 0.4);
-                } else {
-                    S = Math.min(Math.max(W * 0.15, 150), 300) * 0.65; // Scale between 150 and 300
-                    CX = 30 + (S * 0.5);
-                    CY = 30 + (S * 0.4);
-                }
-            }
-
-            function sample(img) {
-                const w = img.width, h = img.height, k = 320 / Math.max(w, h);
-                const cw = Math.round(w * k), ch = Math.round(h * k);
-                const o = document.createElement('canvas');
-                o.width = cw;
-                o.height = ch;
-                const c = o.getContext('2d');
-                c.drawImage(img, 0, 0, cw, ch);
-
-                const d = c.getImageData(0, 0, cw, ch).data, pts = [];
-                for (let y = 0; y < ch; y++) {
-                    for (let x = 0; x < cw; x++) {
-                        const i = (y * cw + x) * 4;
-                        // Filter out dark/transparent background, keeping silver elements
-                        if (d[i + 3] > 80 && d[i] + d[i + 1] + d[i + 2] > 110) {
-                            pts.push([(x - cw / 2) / 320, (y - ch / 2) / 320, d[i], d[i + 1], d[i + 2]]);
-                        }
+                    // Top-Left positioning with responsive scale
+                    if (W < 700) {
+                        S = 80 * 0.65; // Smaller scale on mobile
+                        CX = 20 + (S * 0.5);
+                        CY = 20 + (S * 0.4);
+                    } else {
+                        S = Math.min(Math.max(W * 0.15, 150), 300) * 0.65; // Scale between 150 and 300
+                        CX = 30 + (S * 0.5);
+                        CY = 30 + (S * 0.4);
                     }
                 }
-                for (let i = pts.length - 1; i > 0; i--) {
-                    const j = Math.random() * (i + 1) | 0;
-                    [pts[i], pts[j]] = [pts[j], pts[i]];
-                }
-                return pts;
-            }
 
-            function retarget() {
-                if (!targetPts || !targetPts.length) return;
+                function sample(img) {
+                    const w = img.width, h = img.height, k = 320 / Math.max(w, h);
+                    const cw = Math.round(w * k), ch = Math.round(h * k);
+                    const o = document.createElement('canvas');
+                    o.width = cw;
+                    o.height = ch;
+                    const c = o.getContext('2d');
+                    c.drawImage(img, 0, 0, cw, ch);
+
+                    const d = c.getImageData(0, 0, cw, ch).data, pts = [];
+                    for (let y = 0; y < ch; y++) {
+                        for (let x = 0; x < cw; x++) {
+                            const i = (y * cw + x) * 4;
+                            // Filter out dark/transparent background, keeping silver elements
+                            if (d[i + 3] > 80 && d[i] + d[i + 1] + d[i + 2] > 110) {
+                                pts.push([(x - cw / 2) / 320, (y - ch / 2) / 320, d[i], d[i + 1], d[i + 2]]);
+                            }
+                        }
+                    }
+                    for (let i = pts.length - 1; i > 0; i--) {
+                        const j = Math.random() * (i + 1) | 0;
+                        [pts[i], pts[j]] = [pts[j], pts[i]];
+                    }
+                    return pts;
+                }
+
+                function retarget() {
+                    if (!targetPts || !targetPts.length) return;
+                    for (let i = 0; i < N; i++) {
+                        const p = P[i], t = targetPts[i % targetPts.length];
+                        p.t = t;
+                    }
+                }
+
+                function frame() {
+                    cx.clearRect(0, 0, W, H);
+                    const sp = reduce ? .3 : .07, fr = reduce ? .6 : .86;
+
+                    for (const p of P) {
+                        const t = p.t;
+                        if (!t) continue;
+
+                        const tx = CX + t[0] * S * 1.0 + p.jx;
+                        const ty = CY + t[1] * S * 1.0 + p.jy;
+                        let ax = (tx - p.x) * sp, ay = (ty - p.y) * sp;
+
+                        if (!reduce) {
+                            const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+                            if (d2 < 14000) {
+                                const f = (1 - d2 / 14000) * 3;
+                                const d = Math.sqrt(d2) || 1;
+                                ax += dx / d * f;
+                                ay += dy / d * f;
+                            }
+                        }
+
+                        p.vx = (p.vx + ax) * fr;
+                        p.vy = (p.vy + ay) * fr;
+                        p.x += p.vx;
+                        p.y += p.vy;
+
+                        p.r += (t[2] - p.r) * .08;
+                        p.g += (t[3] - p.g) * .08;
+                        p.b += (t[4] - p.b) * .08;
+
+                        cx.fillStyle = 'rgb(' + (p.r | 0) + ',' + (p.g | 0) + ',' + (p.b | 0) + ')';
+                        cx.fillRect(p.x, p.y, 1.8, 1.8);
+                    }
+                    RAF(frame);
+                }
+
+                function load() {
+                    return new Promise((resolve, reject) => {
+                        const i = new Image();
+                        i.crossOrigin = "anonymous";
+                        i.onload = () => { targetPts = sample(i); resolve(); };
+                        i.onerror = reject;
+                        i.src = '/assets/images/ar-logo.png'; // Updated to use the explicitly saved image
+                    });
+                }
+
+                size();
+                addL('resize', size);
+
                 for (let i = 0; i < N; i++) {
-                    const p = P[i], t = targetPts[i % targetPts.length];
-                    p.t = t;
+                    const a = Math.random() * 6.283;
+                    const r = Math.random() * Math.max(window.innerWidth, window.innerHeight);
+                    P.push({
+                        x: window.innerWidth / 2 + Math.cos(a) * r,
+                        y: window.innerHeight / 2 + Math.sin(a) * r,
+                        vx: 0, vy: 0, r: 60, g: 60, b: 70,
+                        jx: (Math.random() - .5) * 2,
+                        jy: (Math.random() - .5) * 2,
+                        t: null
+                    });
                 }
-            }
 
-            function frame() {
-                cx.clearRect(0, 0, W, H);
-                const sp = reduce ? .3 : .07, fr = reduce ? .6 : .86;
+                addL('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+                addL('pointerleave', () => { mouse.x = mouse.y = -999; });
 
-                for (const p of P) {
-                    const t = p.t;
-                    if (!t) continue;
+                load().then(() => {
+                    retarget();
+                    frame();
+                }).catch(err => console.error("Error loading logo:", err));
 
-                    const tx = CX + t[0] * S * 1.0 + p.jx;
-                    const ty = CY + t[1] * S * 1.0 + p.jy;
-                    let ax = (tx - p.x) * sp, ay = (ty - p.y) * sp;
-
-                    if (!reduce) {
-                        const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
-                        if (d2 < 14000) {
-                            const f = (1 - d2 / 14000) * 3;
-                            const d = Math.sqrt(d2) || 1;
-                            ax += dx / d * f;
-                            ay += dy / d * f;
-                        }
-                    }
-
-                    p.vx = (p.vx + ax) * fr;
-                    p.vy = (p.vy + ay) * fr;
-                    p.x += p.vx;
-                    p.y += p.vy;
-
-                    p.r += (t[2] - p.r) * .08;
-                    p.g += (t[3] - p.g) * .08;
-                    p.b += (t[4] - p.b) * .08;
-
-                    cx.fillStyle = 'rgb(' + (p.r | 0) + ',' + (p.g | 0) + ',' + (p.b | 0) + ')';
-                    cx.fillRect(p.x, p.y, 1.8, 1.8);
+                function fade() {
+                    // Remove fade to ensure logo remains visible
+                    // cv.style.opacity = Math.max(0, 1 - window.scrollY / (window.innerHeight * .8));
                 }
-                RAF(frame);
-            }
 
-            function load() {
-                return new Promise((resolve, reject) => {
-                    const i = new Image();
-                    i.crossOrigin = "anonymous";
-                    i.onload = () => { targetPts = sample(i); resolve(); };
-                    i.onerror = reject;
-                    i.src = '/assets/images/ar-logo.png'; // Updated to use the explicitly saved image
-                });
-            }
-
-            size();
-            addL('resize', size);
-
-            for (let i = 0; i < N; i++) {
-                const a = Math.random() * 6.283;
-                const r = Math.random() * Math.max(window.innerWidth, window.innerHeight);
-                P.push({
-                    x: window.innerWidth / 2 + Math.cos(a) * r,
-                    y: window.innerHeight / 2 + Math.sin(a) * r,
-                    vx: 0, vy: 0, r: 60, g: 60, b: 70,
-                    jx: (Math.random() - .5) * 2,
-                    jy: (Math.random() - .5) * 2,
-                    t: null
-                });
-            }
-
-            addL('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-            addL('pointerleave', () => { mouse.x = mouse.y = -999; });
-
-            load().then(() => {
-                retarget();
-                frame();
-            }).catch(err => console.error("Error loading logo:", err));
-
-            function fade() {
-                // Remove fade to ensure logo remains visible
-                // cv.style.opacity = Math.max(0, 1 - window.scrollY / (window.innerHeight * .8));
-            }
-
-            // addL('scroll', fade, { passive: true });
-            // fade();
+                // addL('scroll', fade, { passive: true });
+                // fade();
             }, 1200);
         }, { once: true });
     </script>
 
     <!-- Footer Hover Wrapper -->
     <script>
-        (function() {
+        (function () {
             const checkReady = setInterval(() => {
                 if (window.CMSData || document.querySelector('#Stage canvas')) {
                     setTimeout(() => {
@@ -458,8 +458,8 @@
         ">
             <!-- Footer Content: Logo on left -->
             <div class="ar-logo-col" style="display: flex; flex-direction: column; max-width: 30%; margin-top: -20px;">
-                <img src="/assets/images/ar-logo-rmbg.png" style="width: 120px; margin-bottom: 0px;"
-                    alt="Aarohan Logo" loading="lazy" decoding="async">
+                <img src="/assets/images/ar-logo-rmbg.png" style="width: 120px; margin-bottom: 0px;" alt="Aarohan Logo"
+                    loading="lazy" decoding="async">
                 <div style="color: #aaa; font-size: 12px; line-height: 1.6; letter-spacing: 1px; margin-top: -15px;">
                     [AAROHAN 2026]<br>
                     [ANNUAL TECHNO-MANAGEMENT FEST]<br>
@@ -468,95 +468,99 @@
             </div>
             <!-- EXPLORE + CONNECT grouped on the right -->
             <div class="ar-links-group" style="display: flex; flex-direction: row; gap: 60px;">
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">EXPLORE</h3>
-                <script>
-                    function triggerFilter(title) {
-                        try {
-                            const isInWork = window.location.pathname.includes('/work') ||
-                                             window.location.hash.includes('work');
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">EXPLORE
+                    </h3>
+                    <script>
+                        function triggerFilter(title) {
+                            try {
+                                const isInWork = window.location.pathname.includes('/work') ||
+                                    window.location.hash.includes('work');
 
-                            function applyFilter() {
-                                try {
-                                    // Find the exact side-menu link generated by WebGL app
-                                    const link = document.querySelector('a[title="-> ' + title + '"]');
-                                    if (link) {
-                                        link.click();
-                                    } else if (window.CMSData) {
-                                        CMSData.filter(title.replace(/s$/, '').toLowerCase());
+                                function applyFilter() {
+                                    try {
+                                        // Find the exact side-menu link generated by WebGL app
+                                        const link = document.querySelector('a[title="-> ' + title + '"]');
+                                        if (link) {
+                                            link.click();
+                                        } else if (window.CMSData) {
+                                            CMSData.filter(title.replace(/s$/, '').toLowerCase());
+                                        }
+                                    } catch (e) { }
+                                }
+
+                                if (!isInWork) {
+                                    // Not in /work yet — find and click the EXPLORE nav button to scroll there first
+                                    const exploreBtn = Array.from(document.querySelectorAll('a, button, [role="button"]'))
+                                        .find(el => {
+                                            const t = (el.innerText || el.textContent || '').trim().toUpperCase();
+                                            return t === 'EXPLORE' && !el.closest('#ar-footer');
+                                        });
+                                    if (exploreBtn) {
+                                        exploreBtn.click();
+                                        // Wait for WebGL scroll animation to reach the spine section, then filter
+                                        setTimeout(applyFilter, 1400);
+                                    } else {
+                                        // Fallback: try firing the goToWork event directly via AppState
+                                        applyFilter();
                                     }
-                                } catch (e) {}
-                            }
-
-                            if (!isInWork) {
-                                // Not in /work yet — find and click the EXPLORE nav button to scroll there first
-                                const exploreBtn = Array.from(document.querySelectorAll('a, button, [role="button"]'))
-                                    .find(el => {
-                                        const t = (el.innerText || el.textContent || '').trim().toUpperCase();
-                                        return t === 'EXPLORE' && !el.closest('#ar-footer');
-                                    });
-                                if (exploreBtn) {
-                                    exploreBtn.click();
-                                    // Wait for WebGL scroll animation to reach the spine section, then filter
-                                    setTimeout(applyFilter, 1400);
                                 } else {
-                                    // Fallback: try firing the goToWork event directly via AppState
                                     applyFilter();
                                 }
-                            } else {
-                                applyFilter();
-                            }
-                        } catch (e) {}
-                        return false;
-                    }
+                            } catch (e) { }
+                            return false;
+                        }
 
-                    // Auto-filter to events initially
-                    window.addEventListener('DOMContentLoaded', () => {
-                        const observer = new MutationObserver(() => {
-                            const link = document.querySelector('a[title="-> Events"]');
-                            if (link && !window.hasAutoFiltered) {
-                                window.hasAutoFiltered = true;
-                                setTimeout(() => {
-                                    if (window.CMSData && typeof window.CMSData.filter === 'function') {
-                                        window.CMSData.filter('event');
-                                    } else {
-                                        link.click();
-                                    }
-                                }, 100);
-                                observer.disconnect();
-                            }
+                        // Auto-filter to events initially
+                        window.addEventListener('DOMContentLoaded', () => {
+                            const observer = new MutationObserver(() => {
+                                const link = document.querySelector('a[title="-> Events"]');
+                                if (link && !window.hasAutoFiltered) {
+                                    window.hasAutoFiltered = true;
+                                    setTimeout(() => {
+                                        if (window.CMSData && typeof window.CMSData.filter === 'function') {
+                                            window.CMSData.filter('event');
+                                        } else {
+                                            link.click();
+                                        }
+                                    }, 100);
+                                    observer.disconnect();
+                                }
+                            });
+                            observer.observe(document.body, { childList: true, subtree: true });
                         });
-                        observer.observe(document.body, { childList: true, subtree: true });
-                    });
-                </script>
-                <a href="#" onclick="return triggerFilter('Events');"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [EVENTS]</a>
-                <a href="#" onclick="return triggerFilter('Workshops');"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
-                    [WORKSHOPS]</a>
-                <a href="#" onclick="return triggerFilter('Corners');"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
-                    [CORNERS]</a>
-                <a href="javascript:void(0)" onclick="triggerSpineScroll('stall')"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [STAGE LINEUP]</a>
-                <a href="#" onclick="return triggerFilter('Sponsors');"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
-                    [SPONSORS]</a>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">CONNECT</h3>
-                <a href="mailto:arhn@nitdgp.ac.in"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
-                    [arhn@nitdgp.ac.in]</a>
-                <a href="https://www.instagram.com/arhn.nitd?stkn=bTBoa2E5eTd4NnV0" target="_blank"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
-                    [INSTAGRAM]</a>
-                <a href="https://www.linkedin.com/company/aarohan-nit-durgapur/" target="_blank"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
-                    [LINKEDIN]</a>
-                <a href="https://x.com/aarohan_nitdgp" target="_blank"
-                    style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [X]</a>
-            </div>
+                    </script>
+                    <a href="#" onclick="return triggerFilter('Events');"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                        [EVENTS]</a>
+                    <a href="#" onclick="return triggerFilter('Workshops');"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                        [WORKSHOPS]</a>
+                    <a href="#" onclick="return triggerFilter('Corners');"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                        [CORNERS]</a>
+                    <a href="javascript:void(0)" onclick="triggerSpineScroll('stall')"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [STAGE
+                        LINEUP]</a>
+                    <a href="#" onclick="return triggerFilter('Sponsors');"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                        [SPONSORS]</a>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <h3 style="margin: 0 0 10px 0; font-weight: normal; font-size: 16px; letter-spacing: 2px;">CONNECT
+                    </h3>
+                    <a href="mailto:arhn@nitdgp.ac.in"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                        [arhn@nitdgp.ac.in]</a>
+                    <a href="https://www.instagram.com/arhn.nitd?stkn=bTBoa2E5eTd4NnV0" target="_blank"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                        [INSTAGRAM]</a>
+                    <a href="https://www.linkedin.com/company/aarohan-nit-durgapur/" target="_blank"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt;
+                        [LINKEDIN]</a>
+                    <a href="https://x.com/aarohan_nitdgp" target="_blank"
+                        style="color: #aaa; text-decoration: none; font-size: 12px; letter-spacing: 1px;">-&gt; [X]</a>
+                </div>
             </div><!-- end right group -->
         </footer>
     </div>
@@ -578,12 +582,14 @@
                 align-items: center !important;
                 text-align: center !important;
             }
+
             .ar-logo-col {
                 max-width: 100% !important;
                 align-items: center !important;
                 text-align: center !important;
                 margin-top: 0 !important;
             }
+
             .ar-links-group {
                 flex-direction: column !important;
                 gap: 40px !important;
@@ -591,7 +597,8 @@
                 justify-content: center !important;
                 align-items: center !important;
             }
-            .ar-links-group > div {
+
+            .ar-links-group>div {
                 align-items: center !important;
             }
         }

@@ -12,43 +12,43 @@
                 if (window.innerWidth < 768) {
                     try {
                         uil['MESH_Element_20_home_scenescale'] = [0.6, 0.6, 1];
-                        
+
                         // CleanRoom scaling for mobile (Splash screen)
                         uil['MESH_Element_22_CleanRoomscale'] = [1.8, 0.9, 1]; // Logo Cross
                         uil['MESH_Element_15_CleanRoomscale'] = [1.3, 1.1, 1]; // AAROHAN Text
                         uil['MESH_Element_20_CleanRoomscale'] = [1.1, 0.9, 1]; // OVERRIDE Text Mesh
-                        
+
                         if (uil['INPUT_Element_20_CleanRoom_text3d_data']) {
                             let textData = JSON.parse(uil['INPUT_Element_20_CleanRoom_text3d_data']);
-                            textData.size = 0.035; 
+                            textData.size = 0.035;
                             textData.width = 0.8;
                             uil['INPUT_Element_20_CleanRoom_text3d_data'] = JSON.stringify(textData);
                         }
 
                         // WorkDetailContent scaling for mobile (Event detail card and text)
                         uil['MESH_Element_6_WorkDetailContentscale'] = [3.8, 2.28, 2]; // Card poster
-                        
+
                         if (uil['INPUT_Element_5_WorkDetailContent_text3d_data']) {
                             let t5 = JSON.parse(uil['INPUT_Element_5_WorkDetailContent_text3d_data']);
                             t5.size = 0.28; // was 0.4
                             t5.width = 2.1; // was 2.5
                             uil['INPUT_Element_5_WorkDetailContent_text3d_data'] = JSON.stringify(t5);
                         }
-                        
+
                         if (uil['INPUT_Element_8_WorkDetailContent_text3d_data']) {
                             let t8 = JSON.parse(uil['INPUT_Element_8_WorkDetailContent_text3d_data']);
                             t8.size = 0.055; // was 0.07
                             t8.width = 2.2;  // was 2.8
                             uil['INPUT_Element_8_WorkDetailContent_text3d_data'] = JSON.stringify(t8);
                         }
-                    } catch(e) {}
+                    } catch (e) { }
                 }
                 return new Response(JSON.stringify(uil), { status: 200, headers: { 'Content-Type': 'application/json' } });
             });
         }
 
         if (!url.endsWith(projectsUrl) && !url.endsWith(driveUrl)) return nativeFetch(input, init);
-        return nativeFetch(driveUrl, init).then(response => response.json()).then(driveCards => {
+        return nativeFetch(`${driveUrl}?t=${Date.now()}`, init).then(response => response.json()).then(driveCards => {
             // Aarohan is the sole source of card content. The engine expects a
             // CMS-shaped video object, so provide an image-backed compatibility
             // object without reintroducing any projects.json fields.
@@ -74,8 +74,10 @@
                 const localExtension = 'webp';
                 // Same-origin files avoid Drive redirects/CORS entirely and
                 // are safe for texImage2D once ImageDecoder has completed.
+                const is2026 = String(card.date).includes('2026') || String(card.completionDate).includes('2026');
+                const imageName = is2026 ? card.id : `card-${localIndex}`;
                 const imageURL = driveId
-                    ? `assets/images/aarohan-cards/optimized/card-${localIndex}.${localExtension}`
+                    ? `assets/images/aarohan-cards/optimized/${imageName}.${localExtension}`
                     : 'assets/images/ar-logo.png';
                 const category = String(card.type || 'event').toLowerCase();
                 const timeline = timelineValue(card);
@@ -85,21 +87,21 @@
                     `Venue : ${card.venue || '-'}`
                 ].join('\n');
                 return {
-                ...card,
-                index,
-                priority: timeline,
-                tags: category.toUpperCase(),
-                imageURL,
-                // The spine label uses subhead; keep the full description in
-                // body for the detail view and show the timeline metadata here.
-                subhead: meta,
-                cardMeta: meta,
-                body: card.description,
-                video: {
-                    thumbnail: imageURL,
-                    url: imageURL,
-                    mimeType: 'image/jpeg'
-                }
+                    ...card,
+                    index,
+                    priority: timeline,
+                    tags: category.toUpperCase(),
+                    imageURL,
+                    // The spine label uses subhead; keep the full description in
+                    // body for the detail view and show the timeline metadata here.
+                    subhead: meta,
+                    cardMeta: meta,
+                    body: card.description,
+                    video: {
+                        thumbnail: imageURL,
+                        url: imageURL,
+                        mimeType: 'image/jpeg'
+                    }
                 };
             });
             // Keep the browser-side image alive while WebGL initializes. This
