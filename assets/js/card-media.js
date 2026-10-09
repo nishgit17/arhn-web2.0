@@ -73,7 +73,7 @@
                 if (scheduled(a) !== scheduled(b)) return scheduled(a) ? -1 : 1;
                 return 0;
             }).map((card, index) => {
-                const driveId = card.imageURL ? new URL(card.imageURL).searchParams.get('id') : null;
+                const hasCustomImage = card.imageURL && card.imageURL.trim() !== "";
                 // lh3 serves the file directly and sends permissive CORS headers;
                 // Drive's thumbnail redirect often taints WebGL image textures.
                 const localIndex = localImageIndex.get(card.id);
@@ -86,7 +86,7 @@
                 // are safe for texImage2D once ImageDecoder has completed.
                 const is2026 = String(card.date).includes('2026') || String(card.completionDate).includes('2026');
                 const imageName = is2026 ? card.id : `card-${localIndex}`;
-                const imageURL = driveId
+                const imageURL = hasCustomImage
                     ? `assets/images/aarohan-cards/optimized/${imageName}.${localExtension}`
                     : 'assets/images/ar-logo.png';
                 const category = categoryName(card);
@@ -104,6 +104,8 @@
                     imageURL,
                     // The spine label uses subhead; keep the full description in
                     // body for the detail view and show the timeline metadata here.
+                    title: card.name,
+                    client: card.clientName,
                     subhead: meta,
                     cardMeta: meta,
                     description: card.description,
